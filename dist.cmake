@@ -42,85 +42,96 @@ macro(_SETUP_PROJECT_DIST)
       ${PROJECT_NAME}-distdir
       COMMAND
         # cmake-format: off
-        rm -f /tmp/${PROJECT_NAME}.tar &&
-        ${GIT_ARCHIVE_ALL} --prefix ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/
-          ${PROJECT_NAME}.tar &&
-        cd ${PROJECT_BINARY_DIR}/ &&
+        rm -f /tmp/${PROJECT_NAME}.tar && ${GIT_ARCHIVE_ALL} --prefix
+        ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ ${PROJECT_NAME}.tar
+        && cd ${PROJECT_BINARY_DIR}/ &&
         (
-         test -d ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION} &&
-         find ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ -type d -print0 |
-           xargs -0 chmod a+w || true
-        ) &&
-        rm -rf ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ &&
-        ${TAR} xf ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.tar &&
-        echo "${PROJECT_VERSION}" >
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/.version &&
-          ${PROJECT_JRL_CMAKE_MODULE_DIR}/gitlog-to-changelog --srcdir ${PROJECT_SOURCE_DIR} >
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ChangeLog &&
-        rm -f ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.tar
-        # cmake-format: on
+          test
+          -d ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION} && find
+          ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ -type d -print0 |
+          xargs -0 chmod a+w || true
+        )
+        && rm -rf ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ && ${TAR}
+        xf ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.tar && echo
+        "${PROJECT_VERSION}" >
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/.version
+        && ${PROJECT_JRL_CMAKE_MODULE_DIR}/gitlog-to-changelog --srcdir
+        ${PROJECT_SOURCE_DIR} >
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ChangeLog
+        && rm -f ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.tar
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-      COMMENT "Generating dist directory for ${PROJECT_NAME}...")
+      COMMENT "Generating dist directory for ${PROJECT_NAME}..."
+    )
     add_dependencies(distdir ${PROJECT_NAME}-distdir)
 
     # Create a tar.gz tarball for the project, and generate the signature
     if(NOT TARGET dist_targz)
       add_custom_target(
-        dist_targz COMMENT "Generating tar.gz tarball and its signature...")
+        dist_targz
+        COMMENT "Generating tar.gz tarball and its signature..."
+      )
     endif()
     add_custom_target(
       ${PROJECT_NAME}-dist_targz
       COMMAND
         # cmake-format: off
         ${TAR} -czf ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz
-          ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ &&
-        ${GPG} --detach-sign --armor -o
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz.sig
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz
-        # cmake-format: on
+        ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ && ${GPG}
+        --detach-sign --armor -o
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz.sig
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
       COMMENT
-        "Generating tar.gz tarball and its signature for ${PROJECT_NAME}...")
+        "Generating tar.gz tarball and its signature for ${PROJECT_NAME}..."
+    )
     add_dependencies(dist_targz ${PROJECT_NAME}-dist_targz)
 
     # Create a tar.bz2 tarball for the project, and generate the signature
     if(NOT TARGET dist_tarbz2)
       add_custom_target(
-        dist_tarbz2 COMMENT "Generating tar.bz2 tarball and its signature...")
+        dist_tarbz2
+        COMMENT "Generating tar.bz2 tarball and its signature..."
+      )
     endif()
     add_custom_target(
       ${PROJECT_NAME}-dist_tarbz2
       COMMAND
         # cmake-format: off
         ${TAR} -cjf ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.bz2
-          ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ &&
-        ${GPG} --detach-sign --armor -o
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.bz2.sig
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.bz2
-        # cmake-format: on
+        ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ && ${GPG}
+        --detach-sign --armor -o
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.bz2.sig
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.bz2
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
       COMMENT
-        "Generating tar.bz2 tarball and its signature for ${PROJECT_NAME}...")
+        "Generating tar.bz2 tarball and its signature for ${PROJECT_NAME}..."
+    )
     add_dependencies(dist_tarbz2 ${PROJECT_NAME}-dist_tarbz2)
 
     # Create a tar.xz tarball for the project, and generate the signature
     if(NOT TARGET dist_tarxz)
       add_custom_target(
-        dist_tarxz COMMENT "Generating tar.xz tarball and its signature...")
+        dist_tarxz
+        COMMENT "Generating tar.xz tarball and its signature..."
+      )
     endif()
     add_custom_target(
       ${PROJECT_NAME}-dist_tarxz
       COMMAND
         # cmake-format: off
         ${TAR} -cJf ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.xz
-          ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ &&
-        ${GPG} --detach-sign --armor -o
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.xz.sig
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.xz
-        # cmake-format: on
+        ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/ && ${GPG}
+        --detach-sign --armor -o
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.xz.sig
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.xz
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
       COMMENT
-        "Generating tar.xz tarball and its signature for ${PROJECT_NAME}...")
+        "Generating tar.xz tarball and its signature for ${PROJECT_NAME}..."
+    )
     add_dependencies(dist_tarxz ${PROJECT_NAME}-dist_tarxz)
 
     # Alias: dist = dist_targz (backward compatibility)
@@ -139,10 +150,11 @@ macro(_SETUP_PROJECT_DIST)
       COMMAND
         # cmake-format: off
         rm -rf
-          ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/
-        # cmake-format: on
+        ${PROJECT_BINARY_DIR}/${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}/
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-      COMMENT "Cleaning dist sources for ${PROJECT_NAME}...")
+      COMMENT "Cleaning dist sources for ${PROJECT_NAME}..."
+    )
     add_dependencies(distclean ${PROJECT_NAME}-distclean)
 
     if(NOT TARGET distorig)
@@ -153,10 +165,11 @@ macro(_SETUP_PROJECT_DIST)
       COMMAND
         # cmake-format: off
         cmake -E copy ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.tar.gz
-          ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.orig.tar.gz
-        # cmake-format: on
+        ${PROJECT_NAME}${PROJECT_SUFFIX}-${PROJECT_VERSION}.orig.tar.gz
+      # cmake-format: on
       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-      COMMENT "Generating orig tarball for ${PROJECT_NAME}...")
+      COMMENT "Generating orig tarball for ${PROJECT_NAME}..."
+    )
     add_dependencies(distorig ${PROJECT_NAME}-distorig)
 
     add_dependencies(${PROJECT_NAME}-dist_targz ${PROJECT_NAME}-distdir)
